@@ -1,0 +1,42 @@
+# Ignorar carpetas de compilación
+target/
+build/
+
+# Ignorar archivos temporales y logs
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Ignorar dependencias locales
+*.jar
+*.war
+
+# Archivos de configuración del IDE
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# Excepciones para el wrapper de Maven
+!.mvn/wrapper/maven-wrapper.jar

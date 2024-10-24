@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>AdminLTE 3 | Starter</title>
+
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" th:href="@{plugins/fontawesome-free/css/all.min.css}">
+        <!-- Theme style -->
+        <link rel="stylesheet" th:href="@{dist/css/adminlte.min.css}">
+
+        <link rel="stylesheet" th:ref="@{plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+        <link rel="stylesheet" th:href="@{plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+        <link rel="stylesheet" th:href="@{plugins/datatables-buttons/css/buttons.bootstrap4.min.css}">
+    </head>
+    <body class="hold-transition sidebar-mini">
+        <div class="wrapper">
+
+            <!-- Navbar -->
+            <div th:insert = "fragmentos/fragmentos :: navbar"></div>
+            <!-- /.navbar -->
+            <!-- Main Sidebar Container -->
+            <div th:insert = "fragmentos/fragmentos :: main-sidebar"></div>
+
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-3">
+                                <h1 class="m-0">Semana</h1>
+                                <br>
+                                <input type="text" class="form-control" placeholder="Enter ..." th:value="${semanaActual.nombreSemana}" disabled>
+                            </div><!-- /.col -->
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active">Starter Page</li>
+                                </ol>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </div><!-- /.container-fluid -->
+                </div>
+                <!-- /.content-header -->
+
+                <!-- TABLA -->
+
+                <form  th:action="@{creandos/guardar}"  method="post" th:object="${asistenciaForm}">
+
+
+                    <!-- Campo oculto que guarda el valor de idsemana -->
+
+
+                    <div class="card-body">
+
+
+                        <h3>Asistencia</h3>    
+
+                        <table id="example2" class="table table-bordered table-hover" >
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>   
+                                    <th>Apellido</th>
+                                    <th>Asistencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>                 
+                                <tr th:each="c, iter:${lugarCreandos}">
+                                    <td th:text="${c.nombre}"></td>
+                                    <td th:text="${c.apellido}"></td> 
+
+                                    <td>    
+
+                                        <select  class="form-control select1" style="width: 100%;" th:name="asistencias[__${iter.index}__].asistencia">
+                                            <!-- Opciones del combo box -->                         
+                                            <option value="Asistió">Asistió</option>
+                                            <option value="Falta">Falta</option>
+                                            <option value="Falta Justificada">Falta Justificada</option>
+                                            <option value="Baja">Baja</option>
+                                        </select>
+                                        <input type="hidden" th:name="asistencias[__${iter.index}__].persona.idpersona" th:value="${c.idpersona}"/>
+                                    </td>
+                                </tr>
+                            </tbody>   
+
+
+                        </table>
+
+                        <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+                </form>
+
+
+
+            </div>
+
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+            <div class="p-3">
+                <h5>Title</h5>
+                <p>Sidebar content</p>
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="float-right d-none d-sm-inline">
+                Anything you want
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+        </footer>
+
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+
+    <!-- jQuery -->
+    <script th:src="@{plugins/jquery/jquery.min.js}"></script>
+    <!-- Bootstrap 4 -->
+    <script th:src="@{plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <!-- AdminLTE App -->
+    <script th:src="@{dist/js/adminlte.min.js}"></script>
+
+
+
+
+
+
+    <!-- DataTables  & Plugins -->
+    <script th:src="@{plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+    <script th:src="@{plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+    <script th:src="@{plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+    <script th:src="@{plugins/jszip/jszip.min.js}"></script>
+    <script th:src="@{plugins/pdfmake/pdfmake.min.js}"></script>
+    <script th:src="@{plugins/pdfmake/vfs_fonts.js}"></script>
+    <script th:src="@{plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+    <script th:src="@{plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+    <script th:src="@{plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+</body>
+</html>
