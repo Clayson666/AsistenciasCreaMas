@@ -31,7 +31,7 @@ build/
 ### NetBeans ###
 /nbproject/private/
 nbbuild/
-dist/
+# dist/ (Comentar esta línea para aceptar la carpeta dist)
 nbdist/
 .nb-gradle/
 
