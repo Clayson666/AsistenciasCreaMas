@@ -69,8 +69,6 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     public void guardarAsistencias(List<Asistencia> asistencias, int semanaActual) {
         for (Asistencia asistencia : asistencias) {
 
-            
-
             if (asistencia.getSemana() == null) {
                 Semana semana = new Semana();
                 semana.setIdsemana(semanaActual);
