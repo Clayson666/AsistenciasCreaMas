@@ -92,8 +92,8 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     }
 
     @Override
-    public List<Object[]> obtenerSemanasUnicas() {
-        return asistenciaRepository.obtenerSemanasUnicas();
+    public List<Object[]> obtenerSemanasUnicas(Integer idLugar) {
+        return asistenciaRepository.obtenerSemanasUnicas(idLugar);
     }
 
     @Override

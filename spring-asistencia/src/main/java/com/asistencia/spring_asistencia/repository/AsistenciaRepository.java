@@ -31,7 +31,7 @@ public interface AsistenciaRepository extends JpaRepository<Asistencia, Integer>
 
     
     
-    @Query("SELECT DISTINCT a.semana.idsemana, a.semana.nombreSemana FROM Asistencia a ORDER BY a.semana.idsemana DESC")
-    List<Object[]> obtenerSemanasUnicas();
+    @Query("SELECT DISTINCT a.semana.idsemana, a.semana.nombreSemana FROM Asistencia a WHERE a.persona.lugar.idLugar = :lugarId ORDER BY a.semana.idsemana DESC")
+    List<Object[]> obtenerSemanasUnicas(@Param("lugarId") Integer idLugar);
 
 }
