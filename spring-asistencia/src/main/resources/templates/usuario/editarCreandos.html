@@ -150,15 +150,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-3">
-                                <h1 class="m-0">Semana</h1>
+                                <h1 class="m-0">Editar Creando</h1>
                                 <br>
-                                <form th:action="@{/filtroSemanas}" method="post">
-                                    <select class="form-control select2" style="width: 100%;" name="idsemana" id="idsemana">              
-                                        <option th:each="s:${listadoSemanas}" th:value="${s[0]}" th:text="${s[1]}" th:selected="${s[0] == idSemanaSeleccionada}" ></option>                  
-                                    </select>
-                                    <br>
-                                    <button type="submit" class="btn btn-primary">Filtrar</button> 
-                                </form>       
+
 
 
 
@@ -179,30 +173,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- TABLAAAA -->
 
                 <div class="card-body">
-                    <table id="example2" class="table table-bordered table-hover" >
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>            
-                                <th>Asistencia</th>
-                                <th>Editar</th>
+                    <form  method="post">
 
-                            </tr>
-                        </thead>
-                        <tbody>                 
-                            <tr th:each="a : ${asistencias}">
-                                <td th:text="${a.persona.nombre}"></td>
-                                <td th:text="${a.asistencia}"></td>
-                                <td> <a th:href="@{/editar/{id}(id=${a.idasistencia})}" class="btn btn-info btn-sm" href="#">
-                                        <i class="fas fa-pencil-alt"></i>
-                                        Edit
-                                    </a>
-                                </td>
+                        <input type="text" class="form-control" placeholder="Enter ..." disabled>
 
-                            </tr>
-                        </tbody>   
-
-
-                    </table>    
+                        <button type="submit" class="btn btn-primary">Editar</button>
+                    </form>
 
 
 
