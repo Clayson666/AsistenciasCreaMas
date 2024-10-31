@@ -115,13 +115,13 @@ public class InicioController {
 
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEdicion(@PathVariable("id") Integer id, Model model){
-        Optional<Asistencia> asistencia = asistenciaService.get(id);
-        if(asistencia.isPresent()){
-            model.addAttribute("asistencia",asistencia.get());
+       /* Optional<Asistencia> asistencia = asistenciaService.get(id);
+        if(asistencia.isPresent()){*/
+         /*   model.addAttribute("asistencia",asistencia.get());*/
             return "usuario/editarCreandos";
-        }else{
+        /*}else{
             return "redirect:/error";
-        }
+        }*/
     }
 
     @GetMapping("/verAsistenciasCreandos")
