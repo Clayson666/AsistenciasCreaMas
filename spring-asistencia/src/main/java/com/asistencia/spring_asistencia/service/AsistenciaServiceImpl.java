@@ -69,8 +69,6 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     public void guardarAsistencias(List<Asistencia> asistencias, int semanaActual) {
         for (Asistencia asistencia : asistencias) {
 
-            
-
             if (asistencia.getSemana() == null) {
                 Semana semana = new Semana();
                 semana.setIdsemana(semanaActual);
@@ -92,8 +90,8 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     }
 
     @Override
-    public List<Object[]> obtenerSemanasUnicas() {
-        return asistenciaRepository.obtenerSemanasUnicas();
+    public List<Object[]> obtenerSemanasUnicas(Integer idLugar) {
+        return asistenciaRepository.obtenerSemanasUnicas(idLugar);
     }
 
     @Override
@@ -102,6 +100,13 @@ public class AsistenciaServiceImpl implements AsistenciaService {
         return asistenciaRepository.filtroLugarSemana(idLugar, idSemana);
     
     }
+
+    @Override
+    public Optional<Asistencia> mostrarPorIdAsistencia(Integer idPersona){
+        return asistenciaRepository.mostrarPorIdAsistencia(idPersona);
+    }
+
+
 
  
 
