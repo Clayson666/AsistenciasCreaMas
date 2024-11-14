@@ -8,6 +8,7 @@ import com.asistencia.spring_asistencia.model.Asistencia;
 
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -33,5 +34,11 @@ public interface AsistenciaRepository extends JpaRepository<Asistencia, Integer>
     
     @Query("SELECT DISTINCT a.semana.idsemana, a.semana.nombreSemana FROM Asistencia a WHERE a.persona.lugar.idLugar = :lugarId ORDER BY a.semana.idsemana DESC")
     List<Object[]> obtenerSemanasUnicas(@Param("lugarId") Integer idLugar);
+
+    @Query("SELECT a FROM Asistencia a JOIN a.persona p WHERE TYPE(p) = Creando AND a.idasistencia = :idAsistencia")
+    Optional<Asistencia> mostrarPorIdAsistencia(@Param("idAsistencia")Integer idPersona);
+
+
+
 
 }

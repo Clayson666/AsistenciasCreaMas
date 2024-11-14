@@ -26,5 +26,5 @@ public interface AsistenciaService {
     public int obtenerUltimaSemana(Integer idLugar);
     List<Object[]> obtenerSemanasUnicas(Integer idLugar);
     public List<Asistencia> filtroLugarSemana(Integer idLugar, Integer idSemana);
- 
+    public Optional<Asistencia> mostrarPorIdAsistencia(Integer idPersona);
 }

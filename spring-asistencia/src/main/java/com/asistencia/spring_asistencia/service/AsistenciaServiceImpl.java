@@ -101,6 +101,13 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     
     }
 
+    @Override
+    public Optional<Asistencia> mostrarPorIdAsistencia(Integer idPersona){
+        return asistenciaRepository.mostrarPorIdAsistencia(idPersona);
+    }
+
+
+
  
 
     

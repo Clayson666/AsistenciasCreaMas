@@ -115,7 +115,7 @@ public class InicioController {
 
     @GetMapping("/editar")
     public String mostrarFormularioEdicion(@RequestParam("id") Integer id, Model model) {
-        Optional<Asistencia> asistencia = asistenciaService.get(id);
+        Optional<Asistencia> asistencia = asistenciaService.mostrarPorIdAsistencia(id);
         if (asistencia.isPresent()) {
             model.addAttribute("asistencia", asistencia.get());
             return "usuario/editarCreandos";
