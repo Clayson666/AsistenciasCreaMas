@@ -176,26 +176,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="card-body">
 
 
+            <form th:action="@{/editar}"  method="post">
+                <input type="hidden" th:value="${asistencia.idasistencia}" name="id" />
 
                 <label>Nombre</label>
-                <input type="text" class="form-control" style="width: 30%;" th:placeholder="${asistencia.persona.nombre}" disabled>
+                <input type="text" class="form-control" style="width: 30%;"
+                       th:placeholder="${asistencia.persona.nombre}" disabled>
                 <br>
                 <label>Apellido</label>
-                <input type="text" class="form-control" style="width: 30%;" th:placeholder="${asistencia.persona.apellido}" disabled>
+                <input type="text" class="form-control" style="width: 30%;"
+                       th:placeholder="${asistencia.persona.apellido}" disabled>
                 <br>
                 <label>Asistencia</label>
-                <select class="form-control select1" style="width: 30%;">
+                <select class="form-control select1" style="width: 30%;" name = "asistencia">
                     <!-- Opciones del combo box -->
                     <option value="" th:selected="${asistencia.asistencia == null}">Seleccione...</option>
                     <option value="Asistió" th:selected="${asistencia.asistencia == 'Asistió'}">Asistió</option>
                     <option value="Falta" th:selected="${asistencia.asistencia == 'Falta'}">Falta</option>
-                    <option value="Falta Justificada" th:selected="${asistencia.asistencia == 'Falta Justificada'}">Falta Justificada</option>
+                    <option value="Falta Justificada" th:selected="${asistencia.asistencia == 'Falta Justificada'}">
+                        Falta Justificada
+                    </option>
                     <option value="Baja" th:selected="${asistencia.asistencia == 'Baja'}">Baja</option>
                 </select>
                 <br>
 
                 <button type="submit" class="btn btn-primary">Editar</button>
-
+            </form>
 
         </div>
 

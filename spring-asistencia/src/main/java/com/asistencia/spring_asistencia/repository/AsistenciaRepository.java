@@ -23,13 +23,15 @@ import org.springframework.stereotype.Repository;
 public interface AsistenciaRepository extends JpaRepository<Asistencia, Integer> {
 
     List<Asistencia> findByPersonaLugarIdLugar(Integer id);
-    @Query("SELECT a FROM Asistencia a WHERE a.persona.lugar.idLugar = :lugarId AND a.semana.idsemana = :semanaId")
-    List<Asistencia> filtroLugarSemana(@Param("lugarId") Integer idLugar, @Param("semanaId") Integer idSemana);
+    @Query("SELECT a FROM Asistencia a WHERE a.persona.lugar.idLugar = :lugarId AND a.semana.idsemana = :semanaId AND TYPE(a.persona) = Creando")
+    List<Asistencia> filtroLugarSemana(@Param("lugarId") Integer idLugar, @Param("semanaId") Integer idSemana );
 
 
-    @Query("SELECT a.semana.idsemana FROM Asistencia a WHERE a.persona.lugar.idLugar = :lugarId ORDER BY a.semana.idsemana DESC")
+    @Query("SELECT a.semana.idsemana FROM Asistencia a WHERE a.persona.lugar.idLugar = :lugarId AND TYPE (a.persona) = Creando ORDER BY a.semana.idsemana DESC ")
     List<Integer> listaDeSemanasPorLugar(@Param("lugarId") Integer idLugar, Pageable pageable);
 
+    @Query("SELECT a.semana.idsemana FROM Asistencia a WHERE a.persona.lugar.idLugar = :lugarId AND TYPE (a.persona) = CreandoLideres ORDER BY a.semana.idsemana DESC ")
+    List<Integer> listaDeSemanasPorLugarLideres(@Param("lugarId") Integer idLugar, Pageable pageable);
     
     
     @Query("SELECT DISTINCT a.semana.idsemana, a.semana.nombreSemana FROM Asistencia a WHERE a.persona.lugar.idLugar = :lugarId ORDER BY a.semana.idsemana DESC")

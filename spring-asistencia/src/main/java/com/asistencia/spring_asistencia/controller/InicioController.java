@@ -7,17 +7,12 @@ package com.asistencia.spring_asistencia.controller;
 import com.asistencia.spring_asistencia.model.Asistencia;
 import com.asistencia.spring_asistencia.model.AsistenciaForm;
 import com.asistencia.spring_asistencia.model.Creando;
+import com.asistencia.spring_asistencia.model.CreandoLideres;
 import com.asistencia.spring_asistencia.model.Lugar;
 import com.asistencia.spring_asistencia.model.Persona;
 import com.asistencia.spring_asistencia.model.Programa;
 import com.asistencia.spring_asistencia.model.Semana;
-import com.asistencia.spring_asistencia.service.AsistenciaService;
-import com.asistencia.spring_asistencia.service.CambioDeSemanaService;
-import com.asistencia.spring_asistencia.service.CreandosService;
-import com.asistencia.spring_asistencia.service.LugarService;
-import com.asistencia.spring_asistencia.service.PersonaService;
-import com.asistencia.spring_asistencia.service.ProgramaService;
-import com.asistencia.spring_asistencia.service.SemanaService;
+import com.asistencia.spring_asistencia.service.*;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.ArrayList;
@@ -58,6 +53,10 @@ public class InicioController {
     @Autowired
     private CambioDeSemanaService cambioSemanaService;
 
+    @Autowired
+    private LideresService lideresService;
+
+
     @GetMapping("/inicio")
     public String inicio(Model model) {
         List<Lugar> lugar = lugarService.findAll();
@@ -88,12 +87,38 @@ public class InicioController {
         }
     }
 
+    private void prepararVistaLideres(Model model, Integer idLugar) {
+        int idSemanaActual = cambioSemanaService.semanaActualLideres(idLugar);
+        List<CreandoLideres> creandosLideres = lideresService.findByLugaridLugar(idLugar);
+        model.addAttribute("lugarCreandos", creandosLideres);
+        model.addAttribute("idLugar", idLugar);
+
+        Optional<Semana> semanas = semanaService.get(idSemanaActual);
+        if (semanas.isPresent()) {
+            model.addAttribute("semanaActual", semanas.get());  // Extraer el objeto Semana del Optional
+        } else {
+            model.addAttribute("semanaActual", new Semana());  // O un valor por defecto
+        }
+    }
+
+    @GetMapping("/lideres")
+    public String vistaLideres(@RequestParam Integer idLugar, Model model, HttpSession session) {
+        session.setAttribute("idLugar", idLugar);
+        prepararVistaLideres(model, idLugar);
+        return "usuario/agregarLideres";
+    }
+
+
+
+
     @GetMapping("/creandos")
     public String vistaCreandos(@RequestParam Integer idLugar, Model model, HttpSession session) {
         session.setAttribute("idLugar", idLugar);
         prepararVistaCreandos(model, idLugar);
         return "usuario/agregarCreandos";
     }
+
+
 
     @PostMapping("/creandos/guardar")
     public String guardarAsistencica(AsistenciaForm asistenciaForm, HttpSession session, Model model) {
@@ -113,6 +138,24 @@ public class InicioController {
 
     }
 
+    @PostMapping("/lideres/guardar")
+    public String guardarAsistencicaLideres(AsistenciaForm asistenciaForm, HttpSession session, Model model) {
+        Integer idLugar = (Integer) session.getAttribute("idLugar");
+        if (idLugar == null) {
+            // Maneja el caso en que idLugar no está disponible
+            // Puedes redirigir a una página de error o mostrar un mensaje
+            return "redirect:/error"; // O cualquier otra lógica
+        }
+        int idSemanaActual = cambioSemanaService.semanaActualLideres(idLugar);
+        asistenciaService.guardarAsistencias(asistenciaForm.getAsistencias(), idSemanaActual);
+
+        // Seguir trabajando con los datos almacenados en la sesión
+        prepararVistaLideres(model, idLugar);
+
+        return "redirect:/lideres?idLugar=" + idLugar;
+
+    }
+
     @GetMapping("/editar")
     public String mostrarFormularioEdicion(@RequestParam("id") Integer id, Model model) {
         Optional<Asistencia> asistencia = asistenciaService.mostrarPorIdAsistencia(id);
@@ -123,6 +166,18 @@ public class InicioController {
             return "redirect:/error";
         }
     }
+
+    @PostMapping("/editar")
+    public String updateAttendance(@RequestParam("id") Integer id, @RequestParam("asistencia") String asistencia, HttpSession session) {
+
+        Integer idLugar = (Integer) session.getAttribute("idLugar");
+        Asistencia asistenciaActual = asistenciaService.encontrarPorIdasistencia(id).orElseThrow(() -> new IllegalArgumentException("Invalid attendance Id:" + id));
+        asistenciaActual.setAsistencia(asistencia);
+        asistenciaService.savePorAsistencia(asistenciaActual);
+        return "redirect:/verAsistenciasCreandos";
+    }
+
+
 
     @GetMapping("/verAsistenciasCreandos")
     public String verAsistenciaCreandos(Model model, HttpSession session) {

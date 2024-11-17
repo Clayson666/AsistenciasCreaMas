@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package com.asistencia.spring_asistencia.service;
+import com.asistencia.spring_asistencia.model.Creando;
 import com.asistencia.spring_asistencia.model.CreandoLideres;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public interface LideresService {
     public void update(CreandoLideres lideres);
     public void delete(Integer id);
     public List<CreandoLideres> findAll();
+    public List<CreandoLideres> findByLugaridLugar(Integer id);
     
     
 }

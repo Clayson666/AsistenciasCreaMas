@@ -49,4 +49,9 @@ public class LideresServiceImpl implements LideresService {
         return lideresRepository.findAll();
     }
 
+    @Override
+    public List<CreandoLideres> findByLugaridLugar(Integer id) {
+        return lideresRepository.findByLugarIdLugar(id);
+    }
+
 }

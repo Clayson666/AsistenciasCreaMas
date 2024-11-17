@@ -24,7 +24,12 @@ public interface AsistenciaService {
     public List<Asistencia> findByPersonaLugarIdLugar(Integer id);
     public void guardarAsistencias(List<Asistencia> asistencias, int semanaActual);
     public int obtenerUltimaSemana(Integer idLugar);
+    public int obtenerUltimaSemanaLideres(Integer idLugar);
     List<Object[]> obtenerSemanasUnicas(Integer idLugar);
     public List<Asistencia> filtroLugarSemana(Integer idLugar, Integer idSemana);
     public Optional<Asistencia> mostrarPorIdAsistencia(Integer idPersona);
+    public Asistencia savePorAsistencia(Asistencia asistencias);
+    Optional<Asistencia> encontrarPorIdasistencia(Integer id);
+
+
 }

@@ -40,6 +40,22 @@ public class CambioDeSemanaService {
         logger.info("la semana actual es:{}",semanaActual);
         return semanaActual;
     }
+
+
+    public int semanaActualLideres(Integer idLugar){
+        logger.info("El lugar actual es",Integer.toString(idLugar));
+        int semanaActual;
+        int ultimaSemana = asistenciaService.obtenerUltimaSemanaLideres(idLugar);
+        int cantidadSemanas = semanaService.conteoDeSemanas();
+        logger.info("Verificando que lleguen el dato de ultima semana {} y la cantidad de semanas {}",ultimaSemana,cantidadSemanas);
+        if (ultimaSemana<cantidadSemanas) {
+            semanaActual = ultimaSemana+1;
+        }else{
+            semanaActual = 0;
+        }
+        logger.info("la semana actual es:{}",semanaActual);
+        return semanaActual;
+    }
     
     
 }

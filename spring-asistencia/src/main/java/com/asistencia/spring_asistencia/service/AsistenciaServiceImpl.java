@@ -89,6 +89,12 @@ public class AsistenciaServiceImpl implements AsistenciaService {
         return resultados.isEmpty() ? 0 : resultados.get(0); // Retorna 0 si no hay resultados
     }
 
+    public int obtenerUltimaSemanaLideres(Integer idLugar) {
+        Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Direction.DESC, "semana.idsemana"));
+        List<Integer> resultados = asistenciaRepository.listaDeSemanasPorLugarLideres(idLugar,pageable);
+        return resultados.isEmpty() ? 0 : resultados.get(0); // Retorna 0 si no hay resultados
+    }
+
     @Override
     public List<Object[]> obtenerSemanasUnicas(Integer idLugar) {
         return asistenciaRepository.obtenerSemanasUnicas(idLugar);
@@ -106,11 +112,15 @@ public class AsistenciaServiceImpl implements AsistenciaService {
         return asistenciaRepository.mostrarPorIdAsistencia(idPersona);
     }
 
+    @Override
+    public Asistencia savePorAsistencia(Asistencia asistencias) {
+        return asistenciaRepository.save(asistencias);
+    }
+
+    @Override
+    public Optional<Asistencia> encontrarPorIdasistencia(Integer id) {
+        return asistenciaRepository.findById(id);
+    }
 
 
- 
-
-    
-    
-    
 }
