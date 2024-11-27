@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Log in</title>
+  <title>Asistencias Crea+</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,40 +16,52 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
+  <div class="login-logo text-center">
+    <img src="dist/img/crea-logo.svg" alt="Logo CREA+" class="logo-image">
+    <b>Asistencia </b>CREA+</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <h5 class="login-box-msg">Iniciar sesión</h5>
 
-      <form th:action="@{/creandos}" method="get">
+      <form th:action="@{/creandos}" method="get" id="loginForm">
         <div class="form-group">
-                  <label>Lugar</label>
                   <select class="form-control select2" style="width: 100%;" name="idLugar" id="idLugar">
-                    <option selected="selected">Seleccione el programa</option>
+                    <option value="" selected="selected">Seleccione la Institución</option>
                     <option th:each="l:${lugar}" th:value="${l.idLugar}" th:text="${l.nombreLugar}"></option>                   
                   </select>
          </div>
       
         <div class="row">
           <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
           </div>
           <!-- /.col -->
         </div>
       </form>
+      <!--Mensaje de alerta-->
+      <div id="alertMessage" style="display:none; color: red; margin-top: 10px">
+        Seleccione un lugar antes de continuar.
+      </div>
 
-      <!-- /.social-auth-links -->
-
- 
     </div>
     <!-- /.login-card-body -->
   </div>
 </div>
 <!-- /.login-box -->
+<!--validación -->
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    const lugarSeleccionado = document.getElementById('idLugar').value;
+    if (lugarSeleccionado === '') {
+      event.preventDefault();
+      const alertMessage = document.getElementById('alertMessage');
+      alertMessage.style.display = 'block';
+      }
+  });
+</script>
 
 <!-- jQuery -->
 <script th:src="@{plugins/jquery/jquery.min.js}"></script>
