@@ -8,8 +8,14 @@ import com.asistencia.spring_asistencia.model.Persona;
 import com.asistencia.spring_asistencia.repository.PersonaRepository;
 import java.util.List;
 import java.util.Optional;
+
+import jakarta.annotation.Resource;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 /**
  *
@@ -51,8 +57,9 @@ public class PersonaServiceImpl implements PersonaService{
         return personaRepository.findByLugarIdLugar(id);
     }
 
-    
+    @Override
+    public Integer contarCreandosActivosBaja( Integer idLugar,  Integer idEstado){
+        return personaRepository.contarCreandosActivosBaja(idLugar, idEstado);
+    }
 
-    
-  
 }

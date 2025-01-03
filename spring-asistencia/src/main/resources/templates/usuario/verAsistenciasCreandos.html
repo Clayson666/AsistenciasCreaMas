@@ -114,13 +114,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a th:href="@{/lideres(idLugar=${idLugar})}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Agregar asistencia</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a th:href="@{verAsistenciasLideres}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Ver asistencias</p>
                                         </a>
@@ -152,7 +152,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <div class="col-sm-3">
                                 <h1 class="m-0">Semana</h1>
                                 <br>
-                                <form th:action="@{/filtroSemanas}" method="post">
+                                <form th:action="@{/filtroSemanasCreandos}" method="post">
                                     <select class="form-control select2" style="width: 100%;" name="idsemana" id="idsemana">              
                                         <option th:each="s:${listadoSemanas}" th:value="${s[0]}" th:text="${s[1]}" th:selected="${s[0] == idSemanaSeleccionada}" ></option>                  
                                     </select>

@@ -4,9 +4,9 @@
  */
 package com.asistencia.spring_asistencia.model;
 
-import jakarta.annotation.Generated;
+
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorColumn;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,10 +15,10 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+
 import jakarta.persistence.Table;
 import java.util.List;
-import com.asistencia.spring_asistencia.model.Lugar;
+
 import jakarta.persistence.ManyToOne;
 
 /**
@@ -46,6 +46,9 @@ public class Persona {
     private Lugar lugar;
     @OneToMany(mappedBy = "asistencia")
     private List<Asistencia> asistencia;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private Estado estado;
 
     
 

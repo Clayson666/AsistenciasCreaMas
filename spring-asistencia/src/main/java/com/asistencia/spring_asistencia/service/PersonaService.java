@@ -5,6 +5,11 @@
 package com.asistencia.spring_asistencia.service;
 
 import com.asistencia.spring_asistencia.model.Persona;
+import jakarta.annotation.Resource;
+import org.apache.catalina.connector.Response;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +24,7 @@ public interface PersonaService {
     public void delete(Integer id);
     public List<Persona> findAll();
     public List<Persona> findByLugarIdLugar(Integer id);
+   // public ResponseEntity<Resource> export(Integer idPersona);
+    public Integer contarCreandosActivosBaja(Integer idLugar, Integer idEstado);
+
 }

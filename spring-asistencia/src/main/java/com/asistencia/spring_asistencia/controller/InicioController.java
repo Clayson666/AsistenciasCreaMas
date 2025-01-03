@@ -10,15 +10,12 @@ import com.asistencia.spring_asistencia.model.Creando;
 import com.asistencia.spring_asistencia.model.CreandoLideres;
 import com.asistencia.spring_asistencia.model.Lugar;
 import com.asistencia.spring_asistencia.model.Persona;
-import com.asistencia.spring_asistencia.model.Programa;
 import com.asistencia.spring_asistencia.model.Semana;
 import com.asistencia.spring_asistencia.service.*;
 import jakarta.servlet.http.HttpSession;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +53,33 @@ public class InicioController {
     @Autowired
     private LideresService lideresService;
 
-
     @GetMapping("/inicio")
     public String inicio(Model model) {
         List<Lugar> lugar = lugarService.findAll();
         model.addAttribute("lugar", lugar);
         return "usuario/inicio";
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard(@RequestParam Integer idLugar, Model model, HttpSession session) {
+        List<String> semanasLugar = asistenciaService.obtenerNombreSemanaPorLugar(idLugar);
+        List<Integer> data1 = asistenciaService.contarAsistenciasPorSemanaYEstado(idLugar, "Asistió");
+        List<Integer> data2 = asistenciaService.contarAsistenciasPorSemanaYEstado(idLugar, "Falta");
+        Integer cantidadCreandosActivos = personaService.contarCreandosActivosBaja(idLugar,1);
+        Integer cantidadCreandosBaja = personaService.contarCreandosActivosBaja(idLugar,2);
+        model.addAttribute("labels", semanasLugar);
+        model.addAttribute("data1", data1);
+        model.addAttribute("data2", data2);
+        model.addAttribute("creandosActivos", cantidadCreandosActivos);
+        model.addAttribute("creandosBaja", cantidadCreandosBaja);
+        return "usuario/dashboard";
+    }
+
+    @GetMapping("/lideres")
+    public String vistaLideres(@RequestParam Integer idLugar, Model model, HttpSession session) {
+        session.setAttribute("idLugar", idLugar);
+        prepararVistaLideres(model, idLugar);
+        return "usuario/agregarLideres";
     }
 
     @PostMapping("/personas")
@@ -81,9 +99,9 @@ public class InicioController {
 
         Optional<Semana> semanas = semanaService.get(idSemanaActual);
         if (semanas.isPresent()) {
-            model.addAttribute("semanaActual", semanas.get());  // Extraer el objeto Semana del Optional
+            model.addAttribute("semanaActual", semanas.get()); // Extraer el objeto Semana del Optional
         } else {
-            model.addAttribute("semanaActual", new Semana());  // O un valor por defecto
+            model.addAttribute("semanaActual", new Semana()); // O un valor por defecto
         }
     }
 
@@ -95,21 +113,11 @@ public class InicioController {
 
         Optional<Semana> semanas = semanaService.get(idSemanaActual);
         if (semanas.isPresent()) {
-            model.addAttribute("semanaActual", semanas.get());  // Extraer el objeto Semana del Optional
+            model.addAttribute("semanaActual", semanas.get()); // Extraer el objeto Semana del Optional
         } else {
-            model.addAttribute("semanaActual", new Semana());  // O un valor por defecto
+            model.addAttribute("semanaActual", new Semana()); // O un valor por defecto
         }
     }
-
-    @GetMapping("/lideres")
-    public String vistaLideres(@RequestParam Integer idLugar, Model model, HttpSession session) {
-        session.setAttribute("idLugar", idLugar);
-        prepararVistaLideres(model, idLugar);
-        return "usuario/agregarLideres";
-    }
-
-
-
 
     @GetMapping("/creandos")
     public String vistaCreandos(@RequestParam Integer idLugar, Model model, HttpSession session) {
@@ -117,8 +125,6 @@ public class InicioController {
         prepararVistaCreandos(model, idLugar);
         return "usuario/agregarCreandos";
     }
-
-
 
     @PostMapping("/creandos/guardar")
     public String guardarAsistencica(AsistenciaForm asistenciaForm, HttpSession session, Model model) {
@@ -168,38 +174,61 @@ public class InicioController {
     }
 
     @PostMapping("/editar")
-    public String updateAttendance(@RequestParam("id") Integer id, @RequestParam("asistencia") String asistencia, HttpSession session) {
-
-        Integer idLugar = (Integer) session.getAttribute("idLugar");
-        Asistencia asistenciaActual = asistenciaService.encontrarPorIdasistencia(id).orElseThrow(() -> new IllegalArgumentException("Invalid attendance Id:" + id));
+    public String updateAttendance(@RequestParam("id") Integer id, @RequestParam("asistencia") String asistencia,
+            HttpSession session) {
+        Asistencia asistenciaActual = asistenciaService.encontrarPorIdasistencia(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid attendance Id:" + id));
         asistenciaActual.setAsistencia(asistencia);
         asistenciaService.savePorAsistencia(asistenciaActual);
         return "redirect:/verAsistenciasCreandos";
     }
 
-
-
     @GetMapping("/verAsistenciasCreandos")
     public String verAsistenciaCreandos(Model model, HttpSession session) {
         Integer idLugar = (Integer) session.getAttribute("idLugar");
         Integer semanaActual = cambioSemanaService.semanaActual(idLugar);
-        List<Asistencia> asistencias = asistenciaService.filtroLugarSemana(idLugar, semanaActual - 1);
+        List<Asistencia> asistencias = asistenciaService.filtroLugarSemanaCreando(idLugar, semanaActual - 1);
         model.addAttribute("asistencias", asistencias);
-        List<Object[]> semanas = asistenciaService.obtenerSemanasUnicas(idLugar);
+        List<Object[]> semanas = asistenciaService.obtenerSemanasUnicasCreandos(idLugar);
         logger.info(semanas.toString());
         model.addAttribute("listadoSemanas", semanas);
         return "usuario/verAsistenciasCreandos";
     }
 
-    @PostMapping("/filtroSemanas")
-    public String filtrarPorSemana(@RequestParam("idsemana") Integer idSemanaSeleccionada, Model model, HttpSession session) {
+    @GetMapping("/verAsistenciasLideres")
+    public String verAsistenciaLideres(Model model, HttpSession session) {
         Integer idLugar = (Integer) session.getAttribute("idLugar");
-        List<Asistencia> asistencias = asistenciaService.filtroLugarSemana(idLugar, idSemanaSeleccionada);
+        Integer semanaActual = cambioSemanaService.semanaActual(idLugar);
+        List<Asistencia> asistencias = asistenciaService.filtroLugarSemanaLideres(idLugar, semanaActual - 1);
         model.addAttribute("asistencias", asistencias);
-        List<Object[]> semanas = asistenciaService.obtenerSemanasUnicas(idLugar);
+        List<Object[]> semanas = asistenciaService.obtenerSemanasUnicasLideres(idLugar);
+        logger.info(semanas.toString());
+        model.addAttribute("listadoSemanas", semanas);
+        return "usuario/verAsistenciasLideres";
+    }
+
+    @PostMapping("/filtroSemanasCreandos")
+    public String filtrarPorSemanaCreandos(@RequestParam("idsemana") Integer idSemanaSeleccionada, Model model,
+            HttpSession session) {
+        Integer idLugar = (Integer) session.getAttribute("idLugar");
+        List<Asistencia> asistencias = asistenciaService.filtroLugarSemanaCreando(idLugar, idSemanaSeleccionada);
+        model.addAttribute("asistencias", asistencias);
+        List<Object[]> semanas = asistenciaService.obtenerSemanasUnicasCreandos(idLugar);
         model.addAttribute("listadoSemanas", semanas);
         model.addAttribute("idSemanaSeleccionada", idSemanaSeleccionada);
         return "usuario/verAsistenciasCreandos";
     }
-}
 
+    @PostMapping("/filtroSemanasLideres")
+    public String filtrarPorSemanaLideres(@RequestParam("idsemana") Integer idSemanaSeleccionada, Model model,
+            HttpSession session) {
+        Integer idLugar = (Integer) session.getAttribute("idLugar");
+        List<Asistencia> asistencias = asistenciaService.filtroLugarSemanaLideres(idLugar, idSemanaSeleccionada);
+        model.addAttribute("asistencias", asistencias);
+        List<Object[]> semanas = asistenciaService.obtenerSemanasUnicasLideres(idLugar);
+        model.addAttribute("listadoSemanas", semanas);
+        model.addAttribute("idSemanaSeleccionada", idSemanaSeleccionada);
+        return "usuario/verAsistenciasLideres";
+    }
+
+}

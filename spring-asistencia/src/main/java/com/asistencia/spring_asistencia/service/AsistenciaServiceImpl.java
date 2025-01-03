@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.PageRequest;
@@ -96,16 +97,29 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     }
 
     @Override
-    public List<Object[]> obtenerSemanasUnicas(Integer idLugar) {
-        return asistenciaRepository.obtenerSemanasUnicas(idLugar);
+    public List<Object[]> obtenerSemanasUnicasCreandos(Integer idLugar) {
+        return asistenciaRepository.obtenerSemanasUnicasCreandos(idLugar);
     }
 
     @Override
-    public List<Asistencia> filtroLugarSemana(Integer idLugar, Integer idSemana) {
+    public List<Object[]> obtenerSemanasUnicasLideres(Integer idLugar) {
+        return asistenciaRepository.obtenerSemanasUnicasLideres(idLugar);
+    }
+
+    @Override
+    public List<Asistencia> filtroLugarSemanaCreando(Integer idLugar, Integer idSemana) {
           
-        return asistenciaRepository.filtroLugarSemana(idLugar, idSemana);
+        return asistenciaRepository.filtroLugarSemanaCreando(idLugar, idSemana);
     
     }
+
+    @Override
+    public List<Asistencia> filtroLugarSemanaLideres(Integer idLugar, Integer idSemana) {
+
+        return asistenciaRepository.filtroLugarSemanaLideres(idLugar, idSemana);
+
+    }
+
 
     @Override
     public Optional<Asistencia> mostrarPorIdAsistencia(Integer idPersona){
@@ -122,5 +136,24 @@ public class AsistenciaServiceImpl implements AsistenciaService {
         return asistenciaRepository.findById(id);
     }
 
+    @Override
+    public List<String> obtenerNombreSemanaPorLugar(Integer idLugar){
+        return asistenciaRepository.obtenerNombreSemanaPorLugar(idLugar);
+    }
 
+    @Override
+    public List<Integer> contarAsistenciasPorSemanaYEstado(Integer idLugar, String estadoAsistencia){
+        System.out.println(">>DATOS POR SEMANA Y ESTADO DE ASISTENCIAS : "+ "El estado de asistencia es: " + estadoAsistencia + asistenciaRepository.contarAsistenciasPorSemanaYEstado(idLugar, estadoAsistencia));
+        return asistenciaRepository.contarAsistenciasPorSemanaYEstado(idLugar, estadoAsistencia);
+    }
+
+    @Override
+    public Integer contarCantidadDeCreandoActivos(Integer idLugar){
+        return asistenciaRepository.contarCantidadDeCreandoActivos(idLugar);
+    }
+
+    @Override
+    public Integer contarCantidadDeCreandoDeBaja(Integer idLugar){
+        return asistenciaRepository.contarCantidadDeCreandoDeBaja(idLugar);
+    }
 }

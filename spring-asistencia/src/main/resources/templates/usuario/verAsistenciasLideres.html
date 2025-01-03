@@ -10,8 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>AdminLTE 3 | Starter</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" th:href="@{plugins/fontawesome-free/css/all.min.css}">
     <!-- Theme style -->
@@ -48,8 +47,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="index3.html" class="brand-link">
-            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
+            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
             <span class="brand-text font-weight-light">AdminLTE 3</span>
         </a>
 
@@ -68,8 +66,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- SidebarSearch Form -->
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
-                    <input class="form-control form-control-sidebar" type="search" placeholder="Search"
-                           aria-label="Search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -93,7 +90,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a th:href="@{/creandos(idLugar=${idLugar})}" class="nav-link active">
+                                <a th:href="@{/creandos(idLugar=${idLugar})}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Agregar asistencia</p>
                                 </a>
@@ -108,7 +105,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </li>
 
                     <li class="nav-item menu-open">
-                        <a href="#" class="nav-link active">
+                        <a href="#"  class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 Asistencia de líderes
@@ -123,7 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a th:href="@{/verAsistenciasLideres}" class="nav-link">
+                                <a  th:href="@{verAsistenciasLideres}" class="nav-link active">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Ver asistencias</p>
                                 </a>
@@ -152,8 +149,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Editar Creando</h1>
+                    <div class="col-sm-3">
+                        <h1 class="m-0">Semana</h1>
+                        <br>
+                        <form th:action="@{/filtroSemanasLideres}" method="post">
+                            <select class="form-control select2" style="width: 100%;" name="idsemana" id="idsemana">
+                                <option th:each="s:${listadoSemanas}" th:value="${s[0]}" th:text="${s[1]}" th:selected="${s[0] == idSemanaSeleccionada}" ></option>
+                            </select>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Filtrar</button>
+                        </form>
+
 
 
                     </div><!-- /.col -->
@@ -173,34 +179,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- TABLAAAA -->
 
         <div class="card-body">
+            <table id="example2" class="table table-bordered table-hover" >
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Asistencia</th>
+                    <th>Editar</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="a : ${asistencias}">
+                    <td th:text="${a.persona.nombre}"></td>
+                    <td th:text="${a.asistencia}"></td>
+                    <td> <a class="btn btn-info btn-sm" th:href="@{/editar(id=${a.idasistencia})}">
+                        <i class="fas fa-pencil-alt"></i>
+                        Edit
+                    </a>
+                    </td>
+
+                </tr>
+                </tbody>
 
 
-            <form th:action="@{/editar}"  method="post">
-                <input type="hidden" th:value="${asistencia.idasistencia}" name="id" />
+            </table>
 
-                <label>Nombre</label>
-                <input type="text" class="form-control" style="width: 30%;"
-                       th:placeholder="${asistencia.persona.nombre}" disabled>
-                <br>
-                <label>Apellido</label>
-                <input type="text" class="form-control" style="width: 30%;"
-                       th:placeholder="${asistencia.persona.apellido}" disabled>
-                <br>
-                <label>Asistencia</label>
-                <select class="form-control select1" style="width: 30%;" name = "asistencia">
-                    <!-- Opciones del combo box -->
-                    <option value="" th:selected="${asistencia.asistencia == null}">Seleccione...</option>
-                    <option value="Asistió" th:selected="${asistencia.asistencia == 'Asistió'}">Asistió</option>
-                    <option value="Falta" th:selected="${asistencia.asistencia == 'Falta'}">Falta</option>
-                    <option value="Falta Justificada" th:selected="${asistencia.asistencia == 'Falta Justificada'}">
-                        Falta Justificada
-                    </option>
-                    <option value="Baja" th:selected="${asistencia.asistencia == 'Baja'}">Baja</option>
-                </select>
-                <br>
 
-                <button type="submit" class="btn btn-primary">Editar</button>
-            </form>
 
         </div>
 
@@ -240,6 +244,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script th:src="@{plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <!-- AdminLTE App -->
 <script th:src="@{dist/js/adminlte.min.js}"></script>
+
+
+
+
 
 
 <!-- DataTables  & Plugins -->

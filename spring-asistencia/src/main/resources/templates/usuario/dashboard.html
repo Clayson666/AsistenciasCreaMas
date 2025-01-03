@@ -21,6 +21,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" th:ref="@{plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
     <link rel="stylesheet" th:href="@{plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
     <link rel="stylesheet" th:href="@{plugins/datatables-buttons/css/buttons.bootstrap4.min.css}">
+    <link th:href="@{https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css}" rel="stylesheet">
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -147,7 +148,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->
+             
         </aside>
+
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -155,12 +158,74 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-3">
+                       
                             <h1 class="m-0">Semana</h1>
                             <br>
-                            <input type="text" class="form-control" placeholder="Enter ..."
-                                th:value="${semanaActual.nombreSemana}" disabled>
-                        </div><!-- /.col -->
+                            <!-- GRAFICOS    -->
+
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-3 col-6">
+                                        <!-- small box -->
+                                        <div class="small-box bg-info">
+                                            <div class="inner">
+                                                <h3 th:text = "${creandosActivos}"></h3>
+
+                                                <p>Creandos activos</p>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ion ion-bag"></i>
+                                            </div>
+                                            <a href="#" class="small-box-footer">More info <i
+                                                    class="fas fa-arrow-circle-right"></i></a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-6">
+                                        <!-- small box -->
+                                        <div class="small-box bg-success">
+                                          <div class="inner">
+                                            <h3 th:text = "${creandosBaja}"></h3>
+                            
+                                            <p>Creandos de baja</p>
+                                          </div>
+                                          <div class="icon">
+                                            <i class="ion ion-stats-bars"></i>
+                                          </div>
+                                          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                        </div>
+                                      </div>
+                                </div>
+
+                            </div>
+
+                            <!-- GRAFICOS DE BARRAS -->
+                            <div class="card card-success">
+                                <div class="card-header">
+                                  <h3 class="card-title">Stacked Bar Chart</h3>
+                  
+                                  <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                      <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                      <i class="fas fa-times"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <div class="chart">
+                                    <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                  </div>
+                                </div>
+                                <!-- /.card-body -->
+                              </div>
+                            </div>
+
+                            
+                            <!-- FINAL DE GRAFICOS  -->
+
+                      
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -174,60 +239,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- TABLA -->
 
-            <form th:action="@{creandos/guardar}" method="post" th:object="${asistenciaForm}">
+        
 
-
-                <!-- Campo oculto que guarda el valor de idsemana -->
-
-
-                <div class="card-body">
-
-
-                    <h3>Asistencia</h3>
-
-                    <table id="example2" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Asistencia</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="c, iter:${lugarCreandos}">
-                                <td th:text="${c.nombre}"></td>
-                                <td th:text="${c.apellido}"></td>
-
-                                <td>
-
-                                    <select class="form-control select1" style="width: 100%;"
-                                        th:name="asistencias[__${iter.index}__].asistencia" required>
-                                        <!-- Opciones del combo box -->
-                                        <option value="">Seleccionar</option>
-                                        <option value="Asistió">Asistió</option>
-                                        <option value="Falta">Falta</option>
-                                        <option value="Falta Justificada">Falta Justificada</option>
-                                        <option value="Baja">Baja</option>
-                                    </select>
-                                    <input type="hidden" th:name="asistencias[__${iter.index}__].persona.idpersona"
-                                        th:value="${c.idpersona}" />
-                                </td>
-                            </tr>
-                        </tbody>
-
-
-                    </table>
-
-                    <button type="submit" class="btn btn-primary btn-block">Guardar</button>
-                </div>
-            </form>
-
-
-
-        </div>
+        
 
         <!-- /.content -->
-
+    
         <!-- /.content-wrapper -->
 
 
@@ -282,40 +299,57 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script th:src="@{plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
     <script th:src="@{plugins/datatables-buttons/js/buttons.print.min.js}"></script>
     <script th:src="@{plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
-    <script>
-        $(function () {
-            $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
+    
+    <script th:src="@{plugins/chart.js/Chart.min.js}"></script>
+
+    
+
+    <script th:inline="javascript">
+        var stackedBarChartCanvas = document.getElementById('stackedBarChart').getContext('2d');
+        
+        // Datos de Thymeleaf
+        
+        var labels = [[${labels}]];
+        var data1 = [[${data1}]];
+        var data2 = [[${data2}]];
+
+        var stackedBarChartData = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Asistencias',
+                    backgroundColor: 'rgba(60,141,188,0.9)',
+                    borderColor: 'rgba(60,141,188,0.8)',
+                    data: data1
+                },
+                {
+                    label: 'Faltas',
+                    backgroundColor: 'rgba(210, 214, 222, 1)',
+                    borderColor: 'rgba(210, 214, 222, 1)',
+                    data: data2
+                }
+            ]
+        };
+
+        var stackedBarChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true,
+                }
+            }
+        };
+
+        var stackedBarChart = new Chart(stackedBarChartCanvas, {
+            type: 'bar',
+            data: stackedBarChartData,
+            options: stackedBarChartOptions
         });
     </script>
-
-<script>
-    document.getElementById("asistenciaForm").addEventListener("submit", function(event) {
-        let valid = true;
-        const selects = document.querySelectorAll('select[name^="asistencias"]');
-        selects.forEach(function(select) {
-            if (select.value === "Seleccionar") {
-                valid = false;
-            }
-        });
-
-        if (!valid) {
-            event.preventDefault(); // Evita que el formulario se envíe
-            alert("Por favor, seleccione una opción de asistencia para todos los estudiantes.");
-        }
-    });
-</script>
 </body>
 
 </html>
