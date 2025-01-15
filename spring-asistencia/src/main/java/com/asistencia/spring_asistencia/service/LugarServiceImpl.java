@@ -9,6 +9,7 @@ import com.asistencia.spring_asistencia.repository.LugarRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,6 +45,10 @@ public class LugarServiceImpl implements LugarService {
     @Override
     public List<Lugar> findAll() {
         return lugarRepository.findAll();
+    }
+    @Override
+    public List<Lugar> lugarPorPrograma(Integer idPrograma){
+        return lugarRepository.lugarPorPrograma(idPrograma);
     }
 
 }

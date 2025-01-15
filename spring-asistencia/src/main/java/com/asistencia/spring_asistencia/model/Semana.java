@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
@@ -28,6 +30,11 @@ public class Semana {
     
     private Integer idsemana;
     private String nombreSemana;
+    private Integer ordenSemana;
+
+    @ManyToOne
+    @JoinColumn(name = "idprograma", nullable = false)
+    private Programa programa;
     
     @Column(name="fecha", nullable=false)
     private LocalDate fecha;
@@ -39,19 +46,26 @@ public class Semana {
     
     public Semana() {
     }
+ 
 
-    public Semana(Integer idsemana, String nombreSemana, LocalDate fecha, List<Asistencia> asistencia) {
+    
+
+
+
+    public Semana(Integer idsemana, String nombreSemana, Integer ordenSemana, Programa programa, LocalDate fecha,
+            List<Asistencia> asistencia) {
         this.idsemana = idsemana;
         this.nombreSemana = nombreSemana;
+        this.ordenSemana = ordenSemana;
+        this.programa = programa;
         this.fecha = fecha;
         this.asistencia = asistencia;
     }
 
-    
-   
-    
 
- 
+
+
+
 
     public List<Asistencia> getAsistencia() {
         return asistencia;
@@ -88,6 +102,34 @@ public class Semana {
 
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
+    }
+
+
+    public Programa getPrograma() {
+        return programa;
+    }
+
+
+    public void setPrograma(Programa programa) {
+        this.programa = programa;
+    }
+
+
+
+
+
+
+    public Integer getOrdenSemana() {
+        return ordenSemana;
+    }
+
+
+
+
+
+
+    public void setOrdenSemana(Integer ordenSemana) {
+        this.ordenSemana = ordenSemana;
     }
     
     

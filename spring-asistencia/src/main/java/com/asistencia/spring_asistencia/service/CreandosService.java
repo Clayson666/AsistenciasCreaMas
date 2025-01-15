@@ -19,7 +19,7 @@ public interface CreandosService {
     public void update (Creando creando);
     public void delete (Integer id);
     public List<Creando> findAll();
-    public List<Creando> findByLugaridLugar(Integer id);
+    public List<Creando> CreandosActivos(Integer idLugar);
     
     
     

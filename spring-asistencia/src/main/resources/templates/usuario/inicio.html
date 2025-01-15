@@ -25,13 +25,16 @@
       <p class="login-box-msg">Sign in to start your session</p>
 
       <form th:action="@{/creandos}" method="get">
+
         <div class="form-group">
-                  <label>Lugar</label>
+                  <label>Colegio o Albergue</label>
                   <select class="form-control select2" style="width: 100%;" name="idLugar" id="idLugar" required>
                     <option value = "" >Seleccione el lugar</option>
                     <option th:each="l:${lugar}" th:value="${l.idLugar}" th:text="${l.nombreLugar}"></option>                   
                   </select>
          </div>
+
+        
       
         <div class="row">
           <!-- /.col -->

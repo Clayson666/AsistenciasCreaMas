@@ -193,8 +193,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <td>
 
-              <select  class="form-control select1" style="width: 100%;" th:name="asistencias[__${iter.index}__].asistencia">
+              <select  class="form-control select1" style="width: 100%;" th:name="asistencias[__${iter.index}__].asistencia" required>
                 <!-- Opciones del combo box -->
+                <option value="">Seleccionar</option>
                 <option value="Asistió">Asistió</option>
                 <option value="Falta">Falta</option>
                 <option value="Falta Justificada">Falta Justificada</option>
@@ -278,7 +279,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
       $('#example2').DataTable({
-          "paging": true,
+          "paging": false,
           "lengthChange": false,
           "searching": false,
           "ordering": true,

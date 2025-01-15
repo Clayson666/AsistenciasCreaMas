@@ -38,16 +38,14 @@ public class Persona {
     private String apellido; 
     private String celular;
     private String sexo;
-    @ManyToOne
-    @JoinColumn(name = "idPrograma")
-    private Programa programa;
+    
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "idLugar")
     private Lugar lugar;
     @OneToMany(mappedBy = "asistencia")
     private List<Asistencia> asistencia;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "idEstado")
     private Estado estado;
 
     
@@ -55,25 +53,34 @@ public class Persona {
     public Persona() {
     }
 
-    public Persona(Integer idpersona, String dni, String nombre, String apellido, String celular, String sexo, Programa programa, Lugar lugar, List<Asistencia> asistencia) {
-        this.idpersona = idpersona;
-        this.dni = dni;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.celular = celular;
-        this.sexo = sexo;
-        this.programa = programa;
-        this.lugar = lugar;
-        this.asistencia = asistencia;
-    }
-
-   
+    
 
  
    
   
   
     
+
+    public Persona(Integer idpersona, String dni, String nombre, String apellido, String celular, String sexo,
+            Lugar lugar, List<Asistencia> asistencia, Estado estado) {
+        this.idpersona = idpersona;
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.celular = celular;
+        this.sexo = sexo;
+        this.lugar = lugar;
+        this.asistencia = asistencia;
+        this.estado = estado;
+    }
+
+
+
+
+
+
+
+
 
     public Integer getIdpersona() {
         return idpersona;
@@ -139,20 +146,25 @@ public class Persona {
         this.lugar = lugar;
     }
 
-    
-    public Programa getPrograma() {
-        return programa;
-    }
 
-    public void setPrograma(Programa programa) {
-        this.programa = programa;
-    }
+
+
+
+
+
+
 
     @Override
     public String toString() {
-        return "Persona{" + "idpersona=" + idpersona + ", dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", celular=" + celular + ", sexo=" + sexo + ", programa=" + programa + ", lugar=" + lugar + ", asistencia=" + asistencia + '}';
+        return "Persona [idpersona=" + idpersona + ", dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido
+                + ", celular=" + celular + ", sexo=" + sexo + ", lugar=" + lugar + ", asistencia=" + asistencia
+                + ", estado=" + estado + "]";
     }
 
+    
+  
+
+   
    
     
 

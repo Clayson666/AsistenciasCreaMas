@@ -20,7 +20,7 @@ public interface LideresService {
     public void update(CreandoLideres lideres);
     public void delete(Integer id);
     public List<CreandoLideres> findAll();
-    public List<CreandoLideres> findByLugaridLugar(Integer id);
+    public List<CreandoLideres> LideresActivos(Integer id);
     
     
 }

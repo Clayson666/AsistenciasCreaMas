@@ -7,6 +7,8 @@ package com.asistencia.spring_asistencia.repository;
 import com.asistencia.spring_asistencia.model.Creando;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,7 +17,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CreandoRepository extends JpaRepository<Creando, Integer>{
-    
-    List<Creando> findByLugarIdLugar(Integer lugarId);
+    @Query("SELECT c FROM Creando c WHERE c.estado.id = 1 AND c.lugar.idLugar = :lugarId")
+    List<Creando> CreandosActivos(@Param("lugarId") Integer lugarId);
+
     
 }

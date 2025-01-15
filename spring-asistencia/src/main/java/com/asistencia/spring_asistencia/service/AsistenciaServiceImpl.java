@@ -65,10 +65,19 @@ public class AsistenciaServiceImpl implements AsistenciaService {
         asistenciaRepository.saveAll(asistencias);
     }
 
+    @Override
+    public Integer actualizarEstado(Integer nuevoEstado,  Integer id){
+        return asistenciaRepository.actualizarEstado(nuevoEstado, id);
+    }
+
     @Transactional
     @Override
     public void guardarAsistencias(List<Asistencia> asistencias, int semanaActual) {
         for (Asistencia asistencia : asistencias) {
+
+            System.out.println(">>>>>>>>>>>>"+asistencia.getAsistencia());
+
+
 
             if (asistencia.getSemana() == null) {
                 Semana semana = new Semana();
@@ -79,31 +88,38 @@ public class AsistenciaServiceImpl implements AsistenciaService {
             if (asistencia.getFecha() == null) {
                 asistencia.setFecha(new Date());
             }
+
+            if("Baja".equals(asistencia.getAsistencia())){
+                System.out.println(">>>>>>ENTREEEE AL IF");
+                actualizarEstado(2, asistencia.getPersona().getIdpersona());
+
+            }
+
             asistenciaRepository.save(asistencia);
         }
     }
 
     @Override
-    public int obtenerUltimaSemana(Integer idLugar) {
+    public int obtenerUltimaSemana(Integer idLugar, Integer idPrograma) {
         Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Direction.DESC, "semana.idsemana"));
-        List<Integer> resultados = asistenciaRepository.listaDeSemanasPorLugar(idLugar,pageable);
+        List<Integer> resultados = asistenciaRepository.listaDeSemanasPorLugar(idLugar,idPrograma,pageable);
         return resultados.isEmpty() ? 0 : resultados.get(0); // Retorna 0 si no hay resultados
     }
 
-    public int obtenerUltimaSemanaLideres(Integer idLugar) {
+    public int obtenerUltimaSemanaLideres(Integer idLugar, Integer idPrograma) {
         Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Direction.DESC, "semana.idsemana"));
-        List<Integer> resultados = asistenciaRepository.listaDeSemanasPorLugarLideres(idLugar,pageable);
+        List<Integer> resultados = asistenciaRepository.listaDeSemanasPorLugarLideres(idLugar,idPrograma,pageable);
         return resultados.isEmpty() ? 0 : resultados.get(0); // Retorna 0 si no hay resultados
     }
 
     @Override
-    public List<Object[]> obtenerSemanasUnicasCreandos(Integer idLugar) {
-        return asistenciaRepository.obtenerSemanasUnicasCreandos(idLugar);
+    public List<Object[]> obtenerSemanasUnicasCreandos(Integer idLugar, Integer idPrograma) {
+        return asistenciaRepository.obtenerSemanasUnicasCreandos(idLugar, idPrograma);
     }
 
     @Override
-    public List<Object[]> obtenerSemanasUnicasLideres(Integer idLugar) {
-        return asistenciaRepository.obtenerSemanasUnicasLideres(idLugar);
+    public List<Object[]> obtenerSemanasUnicasLideres(Integer idLugar, Integer idPrograma) {
+        return asistenciaRepository.obtenerSemanasUnicasLideres(idLugar, idPrograma);
     }
 
     @Override
@@ -155,5 +171,29 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     @Override
     public Integer contarCantidadDeCreandoDeBaja(Integer idLugar){
         return asistenciaRepository.contarCantidadDeCreandoDeBaja(idLugar);
+    }
+    @Override
+    public Integer obtenerSemanasActuales(Integer idPrograma, Integer lugarId) {
+
+        List <Integer> semanaActual = asistenciaRepository.obtenerSemanasActuales(idPrograma, lugarId, PageRequest.of(0,1));
+
+        Integer primeraSemana = semanaActual.isEmpty() ? null : semanaActual.get(0);
+
+        return primeraSemana;
+    }
+    @Override
+    public Integer obtenerIdSemana( Integer idPrograma, Integer ordenSemana){
+        return asistenciaRepository.obtenerIdSemana(idPrograma, ordenSemana);
+    }
+
+
+    @Override
+    public Integer obtenerSemanasActualesLideres(Integer idPrograma, Integer lugarId) {
+
+        List <Integer> semanaActual = asistenciaRepository.obtenerSemanasActualesLideres(idPrograma, lugarId, PageRequest.of(0,1));
+
+        Integer primeraSemana = semanaActual.isEmpty() ? null : semanaActual.get(0);
+
+        return primeraSemana;
     }
 }

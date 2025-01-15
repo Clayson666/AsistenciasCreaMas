@@ -48,8 +48,8 @@ public class SemanaServiceImpl implements SemanaService {
     }
 
     @Override
-    public int conteoDeSemanas() {
-       return semanaRepository.conteo();
+    public int conteoDeSemanas(Integer idPrograma) {
+       return semanaRepository.conteo(idPrograma);
     }
 
 }

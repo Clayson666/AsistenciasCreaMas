@@ -53,9 +53,9 @@ public class CreandosServiceImpl implements CreandosService{
          }
 
     @Override
-    public List<Creando> findByLugaridLugar(Integer id) {
+    public List<Creando> CreandosActivos(Integer idLugar) {
         
-        return creandoRepository.findByLugarIdLugar(id);
+        return creandoRepository.CreandosActivos(idLugar);
            }
     
     

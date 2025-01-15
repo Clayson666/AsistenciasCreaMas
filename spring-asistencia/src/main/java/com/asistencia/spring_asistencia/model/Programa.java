@@ -25,25 +25,37 @@ public class Programa {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer idprograma;
     private String nombrePrograma;
-    
-    @OneToMany(mappedBy = "programa", cascade = CascadeType.ALL)
-    private List<Persona> personas;
+
+    @OneToMany(mappedBy = "programa", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Semana> semanas;
+
+    @OneToMany(mappedBy = "programa", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Lugar> lugares;
    
     public Programa() {
     }
 
-    public Programa(Integer idprograma, String nombrePrograma, List<Persona> personas) {
+
+
+
+  
+
+
+   
+    public Programa(Integer idprograma, String nombrePrograma, List<Semana> semanas, List<Lugar> lugares) {
         this.idprograma = idprograma;
         this.nombrePrograma = nombrePrograma;
-        this.personas = personas;
+        this.semanas = semanas;
+        this.lugares = lugares;
     }
 
-    
-
- 
 
 
-    
+
+
+
+
+
     public Integer getIdprograma() {
         return idprograma;
     }
@@ -60,20 +72,28 @@ public class Programa {
         this.nombrePrograma = nombrePrograma;
     }
 
-    public List<Persona> getPersonas() {
-        return personas;
-    }
+   
 
-    public void setPersonas(List<Persona> personas) {
-        this.personas = personas;
-    }
+    
+
+
 
     @Override
     public String toString() {
-        return "Programa{" + "idprograma=" + idprograma + ", nombrePrograma=" + nombrePrograma + ", personas=" + personas + '}';
+        return "Programa [idprograma=" + idprograma + ", nombrePrograma=" + nombrePrograma + ", semanas=" + semanas
+                + ", lugares=" + lugares + "]";
     }
-    
-    
+
+
+    public List<Semana> getSemanas() {
+        return semanas;
+    }
+
+
+    public void setSemanas(List<Semana> semanas) {
+        this.semanas = semanas;
+    }
+
     
     
 }

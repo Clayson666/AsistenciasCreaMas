@@ -4,9 +4,11 @@
  */
 package com.asistencia.spring_asistencia.repository;
 
-import com.asistencia.spring_asistencia.model.Creando;
+
 import com.asistencia.spring_asistencia.model.CreandoLideres;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,7 +20,8 @@ import java.util.List;
 @Repository
 public interface LideresRepository extends JpaRepository<CreandoLideres, Integer> {
 
-    List<CreandoLideres> findByLugarIdLugar(Integer lugarId);
+   @Query("SELECT c FROM CreandoLideres c WHERE c.estado.id = 1 AND c.lugar.idLugar = :lugarId")
+    List<CreandoLideres> LideresActivos(@Param("lugarId") Integer lugarId);
     
     
 

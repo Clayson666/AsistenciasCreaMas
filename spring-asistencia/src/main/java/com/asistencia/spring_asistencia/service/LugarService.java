@@ -8,6 +8,8 @@ import com.asistencia.spring_asistencia.model.Lugar;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.repository.query.Param;
+
 /**
  *
  * @author eulal
@@ -19,6 +21,7 @@ public interface LugarService {
     public void update (Lugar lugar);
     public void delete(Integer id);
     public List<Lugar> findAll();
+    public List<Lugar> lugarPorPrograma(Integer idPrograma);
     
     
 }

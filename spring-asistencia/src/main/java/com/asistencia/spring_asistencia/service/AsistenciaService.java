@@ -8,6 +8,7 @@ import com.asistencia.spring_asistencia.model.Asistencia;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -24,10 +25,10 @@ public interface AsistenciaService {
     public void saveAllAsistencia(List<Asistencia> asistencias);
     public List<Asistencia> findByPersonaLugarIdLugar(Integer id);
     public void guardarAsistencias(List<Asistencia> asistencias, int semanaActual);
-    public int obtenerUltimaSemana(Integer idLugar);
-    public int obtenerUltimaSemanaLideres(Integer idLugar);
-    List<Object[]> obtenerSemanasUnicasCreandos(Integer idLugar);
-    List<Object[]> obtenerSemanasUnicasLideres(Integer idLugar);
+    public int obtenerUltimaSemana(Integer idLugar, Integer idPrograma);
+    public int obtenerUltimaSemanaLideres(Integer idLugar, Integer idPrograma);
+    List<Object[]> obtenerSemanasUnicasCreandos(Integer idLugar, Integer idPrograma);
+    List<Object[]> obtenerSemanasUnicasLideres(Integer idLugar, Integer idPrograma);
     public List<Asistencia> filtroLugarSemanaCreando(Integer idLugar, Integer idSemana);
     public Optional<Asistencia> mostrarPorIdAsistencia(Integer idPersona);
     public Asistencia savePorAsistencia(Asistencia asistencias);
@@ -37,4 +38,11 @@ public interface AsistenciaService {
     public List<Integer> contarAsistenciasPorSemanaYEstado(Integer idLugar, String estadoAsistencia);
     public Integer contarCantidadDeCreandoActivos(Integer idLugar);
     public Integer contarCantidadDeCreandoDeBaja(Integer idLugar);
+    public Integer actualizarEstado(Integer nuevoEstado,  Integer id);
+    //OBTENER SEMA ACTUAL
+    public Integer obtenerSemanasActuales( Integer idPrograma, Integer lugarId);
+
+    public Integer obtenerIdSemana( Integer idPrograma,Integer ordenSemana);
+
+    public Integer obtenerSemanasActualesLideres( Integer idPrograma, Integer lugarId);
 }

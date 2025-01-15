@@ -19,6 +19,6 @@ public interface SemanaService {
     public void update(Semana semana);
     public void delete(Integer id);
     public List<Semana> findAll();
-    public int conteoDeSemanas();
+    public int conteoDeSemanas(Integer idPrograma);
     
 }

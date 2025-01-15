@@ -50,8 +50,8 @@ public class LideresServiceImpl implements LideresService {
     }
 
     @Override
-    public List<CreandoLideres> findByLugaridLugar(Integer id) {
-        return lideresRepository.findByLugarIdLugar(id);
+    public List<CreandoLideres> LideresActivos(Integer id) {
+        return lideresRepository.LideresActivos(id);
     }
 
 }
