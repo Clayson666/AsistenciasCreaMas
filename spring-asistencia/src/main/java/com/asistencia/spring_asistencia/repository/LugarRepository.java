@@ -4,7 +4,6 @@
  */
 package com.asistencia.spring_asistencia.repository;
 
-import com.asistencia.spring_asistencia.model.CreandoLideres;
 import com.asistencia.spring_asistencia.model.Lugar;
 
 import java.util.List;

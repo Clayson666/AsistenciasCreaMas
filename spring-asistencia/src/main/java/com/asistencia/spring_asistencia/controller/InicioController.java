@@ -13,6 +13,8 @@ import com.asistencia.spring_asistencia.model.Persona;
 import com.asistencia.spring_asistencia.model.Semana;
 import com.asistencia.spring_asistencia.service.*;
 import jakarta.servlet.http.HttpSession;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -111,8 +113,17 @@ public class InicioController {
         session.setAttribute("idLugar", idLugar);
         System.out.println(">>>>>>>>>>> linea 152 " + idLugar);
     
-        prepararVistaCreandos(model, idLugar, idPrograma);
-        return "usuario/agregarCreandos";
+        boolean ruta = prepararVistaCreandos(model, idLugar, idPrograma);
+
+
+        if (ruta==true) {
+            return "usuario/agregarCreandos";
+        }else{
+            return "usuario/faltaRegistroAsistencia";
+        }
+
+
+        
     }
 
     @PostMapping("/personas")
@@ -124,7 +135,11 @@ public class InicioController {
         return "usuario/personas";
     }
 
-    private void prepararVistaCreandos(Model model, Integer idLugar, Integer idPrograma) {
+    private Boolean prepararVistaCreandos(Model model, Integer idLugar, Integer idPrograma) {
+        
+        LocalDate fechaDeHoy = LocalDate.now();
+
+       
         System.out.println(">>>>>>>>>> IDPROGRAMA : "+idPrograma);
         int idSemanaActual = cambioSemanaService.semanaActual(idLugar,idPrograma);
         
@@ -133,10 +148,20 @@ public class InicioController {
         model.addAttribute("idLugar", idLugar);
 
         Optional<Semana> semanas = semanaService.get(idSemanaActual);
+
+        LocalDate fechaInicio = semanas.get().getFechaInicio();
+        LocalDate fechaVencimiento = semanas.get().getFechaVencimiento();
         if (semanas.isPresent()) {
             model.addAttribute("semanaActual", semanas.get()); // Extraer el objeto Semana del Optional
         } else {
             model.addAttribute("semanaActual", new Semana()); // O un valor por defecto
+        }
+
+
+        if (fechaDeHoy.isAfter(fechaInicio.minusDays(1)) && fechaDeHoy.isBefore(fechaVencimiento.plusDays(1))) {
+            return true;
+        }else{
+            return false;
         }
     }
 

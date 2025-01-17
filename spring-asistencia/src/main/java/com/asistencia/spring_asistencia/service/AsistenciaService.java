@@ -8,9 +8,6 @@ import com.asistencia.spring_asistencia.model.Asistencia;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
-
 /**
  *
  * @author eulal

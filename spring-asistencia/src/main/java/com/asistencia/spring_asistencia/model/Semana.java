@@ -36,8 +36,11 @@ public class Semana {
     @JoinColumn(name = "idprograma", nullable = false)
     private Programa programa;
     
-    @Column(name="fecha", nullable=false)
-    private LocalDate fecha;
+    @Column(name="fechaInicio", nullable=false)
+    private LocalDate fechaInicio;
+
+    @Column(name="fechaVencimiento", nullable=false)
+    private LocalDate fechaVencimiento;
     
     
     @OneToMany (mappedBy = "asistencia")
@@ -48,19 +51,23 @@ public class Semana {
     }
  
 
-    
 
-
-
-    public Semana(Integer idsemana, String nombreSemana, Integer ordenSemana, Programa programa, LocalDate fecha,
-            List<Asistencia> asistencia) {
+    public Semana(Integer idsemana, String nombreSemana, Integer ordenSemana, Programa programa, LocalDate fechaInicio,
+            LocalDate fechaVencimiento, List<Asistencia> asistencia) {
         this.idsemana = idsemana;
         this.nombreSemana = nombreSemana;
         this.ordenSemana = ordenSemana;
         this.programa = programa;
-        this.fecha = fecha;
+        this.fechaInicio = fechaInicio;
+        this.fechaVencimiento = fechaVencimiento;
         this.asistencia = asistencia;
     }
+
+
+
+
+
+
 
 
 
@@ -96,13 +103,31 @@ public class Semana {
         return "Semana{" + "idsemana=" + idsemana + ", nombreSemana=" + nombreSemana + ", asistencia=" + asistencia + '}';
     }
 
-    public LocalDate getFecha() {
-        return fecha;
+   
+
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+
+
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
+
+
+
+    public LocalDate getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+
+
+    public void setFechaVencimiento(LocalDate fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
 
 
     public Programa getPrograma() {

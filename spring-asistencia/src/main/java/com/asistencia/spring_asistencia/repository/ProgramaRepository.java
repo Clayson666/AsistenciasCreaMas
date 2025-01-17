@@ -4,7 +4,7 @@
  */
 package com.asistencia.spring_asistencia.repository;
 
-import com.asistencia.spring_asistencia.model.Persona;
+
 import com.asistencia.spring_asistencia.model.Programa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

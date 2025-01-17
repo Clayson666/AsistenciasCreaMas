@@ -104,7 +104,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a th:href="@{/creandos(idLugar=${idLugar})}" class="nav-link active">
+                                    <a th:href="@{/creandos(idLugar=${idLugar})}" class="nav-link active>
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Agregar asistencia</p>
                                     </a>
@@ -203,11 +203,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <select class="form-control select1" style="width: 100%;"
                                         th:name="asistencias[__${iter.index}__].asistencia" required>
                                         <!-- Opciones del combo box -->
-                                        <option value="">Seleccionar</option>
-                                        <option value="Asistió">Asistió</option>
-                                        <option value="Falta">Falta</option>
-                                        <option value="Falta Justificada">Falta Justificada</option>
-                                        <option value="Baja">Baja</option>
+                                         <!-- AL FINALIZAR ACTIVAR SELECCION -->
+                                        <!-- <option value="">Seleccionar</option> -->
+                                        <option value="Asistió">Asistió ✅</option>
+                                        <option value="Falta">Falta❌</option>
+                                        <option value="Falta Justificada">Falta Justificada⚠️</option>
+                                        <option value="Baja">Baja🔻</option>
                                     </select>
                                     <input type="hidden" th:name="asistencias[__${iter.index}__].persona.idpersona"
                                         th:value="${c.idpersona}" />

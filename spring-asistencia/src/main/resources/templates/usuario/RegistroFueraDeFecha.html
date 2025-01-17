@@ -90,13 +90,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a th:href="@{/creandos(idLugar=${idLugar})}" class="nav-link">
+                                        <a th:href="@{/creandos(idLugar=${idLugar})}" class="nav-link active">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Agregar asistencia</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href="@{verAsistenciasCreandos}" class="nav-link active">
+                                        <a th:href="@{verAsistenciasCreandos}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Ver asistencias</p>
                                         </a>
@@ -149,26 +149,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="content-header">
                     <div class="container-fluid">
                         <div class="row mb-2">
+                            
                             <div class="col-sm-3">
-                                <h1 class="m-0">Semana</h1>
+                                
                                 <br>
-                                <form th:action="@{/filtroSemanasCreandos}" method="post">
-                                    <select class="form-control select2" style="width: 100%;" name="idsemana" id="idsemana">              
-                                        <option th:each="s:${listadoSemanas}" th:value="${s[0]}" th:text="${s[1]}" th:selected="${s[0] == idSemanaSeleccionada}" ></option>                  
-                                    </select>
-                                    <br>
-                                    <button type="submit" class="btn btn-primary">Filtrar</button> 
-                                </form>       
-
-
-
+                        
                             </div><!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                                     <li class="breadcrumb-item active">Starter Page</li>
                                 </ol>
+                                
                             </div><!-- /.col -->
+                            <!-- AQUI SE MUESTRA LA ALERTAAAAA -->
+                            <h1 class="m-0">Pronto se habilitarà la asistencia. Espere por favor.</h1>
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
                 </div>
@@ -179,36 +174,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- TABLAAAA -->
 
                 <div class="card-body">
-                    <table id="example2" class="table table-bordered table-hover" >
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>            
-                                <th>Asistencia</th>
-                                <th>Editar</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="a : ${asistencias}">
-                                <td th:text="${a.persona.nombre}"></td>
-                                <td>
-                                    <span th:if="${a.asistencia == 'Asistió'}">Asistió ✅</span>
-                                    <span th:if="${a.asistencia == 'Falta'}">Falta❌</span>
-                                    <span th:if="${a.asistencia == 'Falta Justificada'}">Falta Justificada⚠️</span>
-                                    <span th:if="${a.asistencia == 'Baja'}">Baja🔻</span>
-                                </td>
-                                <td> <a class="btn btn-info btn-sm" th:href="@{/editar(id=${a.idasistencia})}">
-                                        <i class="fas fa-pencil-alt"></i>
-                                        Edit
-                                    </a>
-                                </td>
-
-                            </tr>
-                        </tbody>
-
-
-                    </table>    
-
+                   <!-- AQUI HIBA LA TABLA  -->
+                    
 
 
                 </div>
