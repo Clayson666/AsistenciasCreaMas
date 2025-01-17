@@ -115,11 +115,11 @@ public class InicioController {
     
         boolean ruta = prepararVistaCreandos(model, idLugar, idPrograma);
 
-
+        System.out.println("MSG 118: "+ruta);
         if (ruta==true) {
             return "usuario/agregarCreandos";
         }else{
-            return "usuario/faltaRegistroAsistencia";
+            return "usuario/RegistroFueraDeFecha";
         }
 
 
@@ -197,7 +197,7 @@ public class InicioController {
         // Seguir trabajando con los datos almacenados en la sesión
         prepararVistaCreandos(model, idLugar, idPrograma);
 
-        return "redirect:/creandos?idPrograma="+idPrograma+"&idLugar="+idLugar;
+        return "redirect:/creandos?&idLugar="+idLugar;
 
     }
 

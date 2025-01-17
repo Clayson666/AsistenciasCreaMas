@@ -50,10 +50,12 @@ public class CambioDeSemanaService {
     // SOLO PARA CREANDOS -  NO LIDERES
     public Integer ultimaSemanaRegistrada(Integer idLugar, Integer idPrograma){
         Integer ordenSemanaActual = asistenciaService.obtenerSemanasActuales(idPrograma, idLugar);
+        
         if (ordenSemanaActual==null) {
             ordenSemanaActual = 1;
         }
         Integer idSemanaActual = asistenciaService.obtenerIdSemana(idPrograma, ordenSemanaActual);
+        logger.info("El id de semana es {}", idSemanaActual);
         return idSemanaActual;
     }
 
