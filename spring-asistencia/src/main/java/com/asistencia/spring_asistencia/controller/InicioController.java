@@ -60,12 +60,11 @@ public class InicioController {
         List<Lugar> lugar = lugarService.lugarPorPrograma(idPrograma);
         model.addAttribute("lugar", lugar);
         model.addAttribute("idPrograma", idPrograma);
-        //SETEAMOS SESIÓN PARA EL PROGRAMA
+        // SETEAMOS SESIÓN PARA EL PROGRAMA
         session.setAttribute("idPrograma", idPrograma);
-        System.out.println(">>>>>>>>>>> "+idPrograma);
+        System.out.println(">>>>>>>>>>> " + idPrograma);
         return "usuario/inicio";
     }
-
 
     @GetMapping("/dashboard")
     public String dashboard(@RequestParam Integer idLugar, Model model, HttpSession session) {
@@ -83,11 +82,11 @@ public class InicioController {
     }
 
     @GetMapping("/lideres")
-    public String vistaLideres( Model model, HttpSession session) {
+    public String vistaLideres(Model model, HttpSession session) {
         Integer idLugar = (Integer) session.getAttribute("idLugar");
         Integer idPrograma = (Integer) session.getAttribute("idPrograma");
-        System.out.println(">>>>>>>PROGRAMA es: "+idPrograma);
-    
+        System.out.println(">>>>>>>PROGRAMA es: " + idPrograma);
+
         // Verificar si están presentes
         if (idLugar != null && idPrograma != null) {
             model.addAttribute("idLugar", idLugar);
@@ -96,34 +95,38 @@ public class InicioController {
             // Manejo del caso en que no existan en la sesión
             return "error";
         }
-        prepararVistaLideres(model, idLugar,idPrograma);
-        return "usuario/agregarLideres";
+        boolean ruta = prepararVistaLideres(model, idLugar, idPrograma);
+        System.out.println("MSG 118: " + ruta);
+        if (ruta == true) {
+            return "usuario/agregarLideres";
+        } else {
+            return "usuario/RegistroFueraDeFechaLideres";
+        }
+
     }
-    
+
     @GetMapping("/creandos")
     public String vistaCreandos(@RequestParam Integer idLugar, Model model, HttpSession session) {
         Integer idPrograma = (Integer) session.getAttribute("idPrograma");
         System.out.println(">>>>CREANDOS/IDPROGRAMA:" + idPrograma);
-    
+
         if (idPrograma == null) {
             // Manejar el caso en que idPrograma no está configurado en la sesión
             return "redirect:/error"; // Redirigir a una página de error o inicio de sesión
         }
-    
+
         session.setAttribute("idLugar", idLugar);
         System.out.println(">>>>>>>>>>> linea 152 " + idLugar);
-    
+
         boolean ruta = prepararVistaCreandos(model, idLugar, idPrograma);
 
-        System.out.println("MSG 118: "+ruta);
-        if (ruta==true) {
+        System.out.println("MSG 118: " + ruta);
+        if (ruta == true) {
             return "usuario/agregarCreandos";
-        }else{
+        } else {
             return "usuario/RegistroFueraDeFecha";
         }
 
-
-        
     }
 
     @PostMapping("/personas")
@@ -136,13 +139,12 @@ public class InicioController {
     }
 
     private Boolean prepararVistaCreandos(Model model, Integer idLugar, Integer idPrograma) {
-        
+
         LocalDate fechaDeHoy = LocalDate.now();
 
-       
-        System.out.println(">>>>>>>>>> IDPROGRAMA : "+idPrograma);
-        int idSemanaActual = cambioSemanaService.semanaActual(idLugar,idPrograma);
-        
+        System.out.println(">>>>>>>>>> IDPROGRAMA : " + idPrograma);
+        int idSemanaActual = cambioSemanaService.semanaActual(idLugar, idPrograma);
+
         List<Creando> creandos = creandoService.CreandosActivos(idLugar);
         model.addAttribute("lugarCreandos", creandos);
         model.addAttribute("idLugar", idLugar);
@@ -157,30 +159,40 @@ public class InicioController {
             model.addAttribute("semanaActual", new Semana()); // O un valor por defecto
         }
 
-
         if (fechaDeHoy.isAfter(fechaInicio.minusDays(1)) && fechaDeHoy.isBefore(fechaVencimiento.plusDays(1))) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    private void prepararVistaLideres(Model model, Integer idLugar, Integer idPrograma) {
+    private boolean prepararVistaLideres(Model model, Integer idLugar, Integer idPrograma) {
+
+        LocalDate fechaDeHoy = LocalDate.now();
+
         int idSemanaActual = cambioSemanaService.semanaActualLideres(idLugar, idPrograma);
         List<CreandoLideres> creandosLideres = lideresService.LideresActivos(idLugar);
         model.addAttribute("lugarCreandos", creandosLideres);
         model.addAttribute("idLugar", idLugar);
 
         Optional<Semana> semanas = semanaService.get(idSemanaActual);
+
+        LocalDate fechaInicio = semanas.get().getFechaInicio();
+        LocalDate fechaVencimiento = semanas.get().getFechaVencimiento();
+
         if (semanas.isPresent()) {
             model.addAttribute("semanaActual", semanas.get()); // Extraer el objeto Semana del Optional
         } else {
             model.addAttribute("semanaActual", new Semana()); // O un valor por defecto
         }
+
+        if (fechaDeHoy.isAfter(fechaInicio.minusDays(1)) && fechaDeHoy.isBefore(fechaVencimiento.plusDays(1))) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
-
-
-    
 
     @PostMapping("/creandos/guardar")
     public String guardarAsistencica(AsistenciaForm asistenciaForm, HttpSession session, Model model) {
@@ -197,7 +209,7 @@ public class InicioController {
         // Seguir trabajando con los datos almacenados en la sesión
         prepararVistaCreandos(model, idLugar, idPrograma);
 
-        return "redirect:/creandos?&idLugar="+idLugar;
+        return "redirect:/creandos?&idLugar=" + idLugar;
 
     }
 
@@ -245,11 +257,12 @@ public class InicioController {
     public String verAsistenciaCreandos(Model model, HttpSession session) {
         Integer idLugar = (Integer) session.getAttribute("idLugar");
         Integer idPrograma = (Integer) session.getAttribute("idPrograma");
-        Integer semanaActual = cambioSemanaService.ultimaSemanaRegistrada(idLugar,idPrograma);
-        System.out.println(">>>>>>>> SEMANA ACTUAL ES: "+semanaActual);
+        Integer semanaActual = cambioSemanaService.ultimaSemanaRegistrada(idLugar, idPrograma);
+        System.out.println(">>>>>>>> SEMANA ACTUAL ES: " + semanaActual);
         List<Asistencia> asistencias = asistenciaService.filtroLugarSemanaCreando(idLugar, semanaActual);
-        System.out.println(">>>>> CONTROL 226: "+asistencias);
-        //EN CASO NO SE HAYAN REGISTRADO ASISTENCIAS ESTE DEBE MOSTRAR UNA VISTA DONDE REQUIERE LA ASISTENCIA
+        System.out.println(">>>>> CONTROL 226: " + asistencias);
+        // EN CASO NO SE HAYAN REGISTRADO ASISTENCIAS ESTE DEBE MOSTRAR UNA VISTA DONDE
+        // REQUIERE LA ASISTENCIA
         if (asistencias.isEmpty()) {
             return "usuario/faltaRegistroAsistencia";
         }
@@ -266,7 +279,12 @@ public class InicioController {
         Integer idPrograma = (Integer) session.getAttribute("idPrograma");
         Integer semanaActual = cambioSemanaService.ultimaSemanaRegistradaLideres(idLugar, idPrograma);
         List<Asistencia> asistencias = asistenciaService.filtroLugarSemanaLideres(idLugar, semanaActual);
-        System.out.println(">>>>> CONTROL 239: "+asistencias);
+        System.out.println(">>>>> CONTROL 239: " + asistencias);
+        // EN CASO NO SE HAYAN REGISTRADO ASISTENCIAS ESTE DEBE MOSTRAR UNA VISTA DONDE
+        // REQUIERE LA ASISTENCIA
+        if (asistencias.isEmpty()) {
+            return "usuario/faltaRegistroAsistenciaLideres";
+        }
         model.addAttribute("asistencias", asistencias);
         List<Object[]> semanas = asistenciaService.obtenerSemanasUnicasLideres(idLugar, idPrograma);
         logger.info(semanas.toString());
