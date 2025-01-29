@@ -19,42 +19,32 @@ import java.util.List;
  */
 
 @Entity
-@Table(name="programa")
+@Table(name = "programa")
 public class Programa {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idprograma;
     private String nombrePrograma;
 
-    @OneToMany(mappedBy = "programa", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "programa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Semana> semanas;
 
-    @OneToMany(mappedBy = "programa", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "programa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lugar> lugares;
-   
+
+    private String contrasena;
+
     public Programa() {
     }
 
-
-
-
-  
-
-
-   
-    public Programa(Integer idprograma, String nombrePrograma, List<Semana> semanas, List<Lugar> lugares) {
+    public Programa(Integer idprograma, String nombrePrograma, List<Semana> semanas, List<Lugar> lugares,
+            String contrasena) {
         this.idprograma = idprograma;
         this.nombrePrograma = nombrePrograma;
         this.semanas = semanas;
         this.lugares = lugares;
+        this.contrasena = contrasena;
     }
-
-
-
-
-
-
-
 
     public Integer getIdprograma() {
         return idprograma;
@@ -72,11 +62,21 @@ public class Programa {
         this.nombrePrograma = nombrePrograma;
     }
 
-   
+    public List<Lugar> getLugares() {
+        return lugares;
+    }
 
-    
+    public void setLugares(List<Lugar> lugares) {
+        this.lugares = lugares;
+    }
 
+    public String getContrasena() {
+        return contrasena;
+    }
 
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
 
     @Override
     public String toString() {
@@ -84,16 +84,12 @@ public class Programa {
                 + ", lugares=" + lugares + "]";
     }
 
-
     public List<Semana> getSemanas() {
         return semanas;
     }
-
 
     public void setSemanas(List<Semana> semanas) {
         this.semanas = semanas;
     }
 
-    
-    
 }

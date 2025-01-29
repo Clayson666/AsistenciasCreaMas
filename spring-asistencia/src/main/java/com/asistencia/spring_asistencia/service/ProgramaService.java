@@ -18,5 +18,7 @@ public interface ProgramaService {
     public void update(Programa programa);
     public void delete(Integer id);
     public List<Programa> findAll();
+    public Programa validarContrasena(Integer idPrograma, String contrasena);
+
     
 }

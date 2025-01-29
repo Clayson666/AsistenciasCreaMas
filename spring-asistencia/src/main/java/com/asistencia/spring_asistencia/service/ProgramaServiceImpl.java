@@ -45,7 +45,10 @@ public class ProgramaServiceImpl implements ProgramaService {
         return programaRepository.findAll();
     }
     
-    
+    @Override
+    public Programa validarContrasena(Integer idPrograma, String contraseña){
+        return programaRepository.validarContrasena(idPrograma, contraseña);
+    }
     
     
 }

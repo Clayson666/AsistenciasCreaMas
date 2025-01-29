@@ -11,6 +11,7 @@ import com.asistencia.spring_asistencia.model.CreandoLideres;
 import com.asistencia.spring_asistencia.model.Lugar;
 import com.asistencia.spring_asistencia.model.Persona;
 import com.asistencia.spring_asistencia.model.Semana;
+import com.asistencia.spring_asistencia.model.Programa;
 import com.asistencia.spring_asistencia.service.*;
 import jakarta.servlet.http.HttpSession;
 
@@ -53,6 +54,9 @@ public class InicioController {
 
     @Autowired
     private LideresService lideresService;
+
+    @Autowired
+    private ProgramaService programaService;
 
     @GetMapping("/inicio")
     public String obtenerInicioPorPrograma(Model model,
@@ -105,10 +109,19 @@ public class InicioController {
 
     }
 
-    @GetMapping("/creandos")
-    public String vistaCreandos(@RequestParam Integer idLugar, Model model, HttpSession session) {
+    @PostMapping("/creandos")
+    public String vistaCreandos(@RequestParam("idLugar") Integer idLugar, @RequestParam("contrasena") String contrasena, Model model, HttpSession session) {
+
+       
+
         Integer idPrograma = (Integer) session.getAttribute("idPrograma");
         System.out.println(">>>>CREANDOS/IDPROGRAMA:" + idPrograma);
+        Programa programa = programaService.validarContrasena(idPrograma, contrasena);
+
+        if(programa == null){
+            model.addAttribute("errorMessage", "Contraseña incorrecta");
+            return "usuario/inicio?idPrograma="+idPrograma;
+        }
 
         if (idPrograma == null) {
             // Manejar el caso en que idPrograma no está configurado en la sesión
